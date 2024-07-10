@@ -36,7 +36,7 @@ DegenToken is a smart contract built on the Ethereum blockchain using Solidity. 
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/DegenToken.git
+    git clone https://github.com/Chandanaayesetty/ETH_Intermediate_mod4/tree/main
     ```
 2. Navigate to the project directory:
     ```sh
