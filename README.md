@@ -12,6 +12,8 @@ DegenToken is a smart contract built on the Ethereum blockchain using Solidity. 
 - **Token Locking**: Users can lock their tokens for a specified duration. Locked tokens cannot be transferred until the lock period expires.
 - **Token Unlocking**: After the lock period expires, users can unlock their tokens and transfer them freely.
 - **Locked Token Information**: Users can check the amount of tokens locked and the unlock time for any address.
+- **Add Item**:Adds a new item with a unique itemId, Sets the name and cost of the item.
+- **Redeems**:Redeems an item by its itemId, checks that the item exists and the user has sufficient tokens.
 
 ## Functions
 
@@ -22,6 +24,9 @@ DegenToken is a smart contract built on the Ethereum blockchain using Solidity. 
 5. **lockTokens**: Allows users to lock tokens for a specified duration (in seconds).
 6. **unlockTokens**: Allows users to unlock their tokens after the lock period has expired.
 7. **getLockedTokens**: Allows users to check the amount of tokens locked and their unlock time for a specific address.
+8. **addItem**: Allows the contract owner to add new items that can be redeemed using DegenTokens.
+9. **redeem**: Allows users to redeem DegenTokens for items.
+
 
 ## Getting Started
 
@@ -95,6 +100,10 @@ Once the lock period expires, users can unlock their tokens and transfer them as
 ### Checking Locked Tokens
 
 Users can check the amount of tokens locked and the unlock time for any address using the `getLockedTokens` function.
+
+### DegenToken Item Management
+
+This section focuses on managing redeemable items within the DegenToken contract, enabling item addition and redemption functionalities.
 
 ## License
 
