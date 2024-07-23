@@ -7,6 +7,16 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 contract DegenToken is ERC20, Ownable, ERC20Burnable {
 
+    constructor() ERC20("Degen", "DGN") Ownable(msg.sender) {
+        // Predefined items
+        items[1] = Item("Gun", 100);
+        items[2] = Item("BulletPack", 200);
+    }
+
+    function mint(address to, uint256 amount) public onlyOwner {
+        _mint(to, amount);
+    }
+
     struct LockedTokens {
         uint256 amount;
         uint256 unlockTime;
@@ -14,11 +24,14 @@ contract DegenToken is ERC20, Ownable, ERC20Burnable {
 
     mapping(address => LockedTokens) private lockedTokens;
 
-    constructor() ERC20("Degen", "DGN") Ownable(msg.sender) {}
-
-    function mint(address to, uint256 amount) public onlyOwner {
-        _mint(to, amount);
+    // Define a struct for items
+    struct Item {
+        string name;
+        uint256 cost;
     }
+
+    // Mapping of item IDs to items
+    mapping(uint256 => Item) public items;
 
     function transferTokens(address to, uint256 amount) public {
         _transfer(_msgSender(), to, amount);
@@ -29,9 +42,9 @@ contract DegenToken is ERC20, Ownable, ERC20Burnable {
     }
 
     function transferFromTokens(address from, address to, uint256 amount) public {
-        _transfer(from, to, amount);
         uint256 currentAllowance = allowance(from, _msgSender());
         require(currentAllowance >= amount, "ERC20: transfer amount exceeds allowance");
+        _transfer(from, to, amount);
         _approve(from, _msgSender(), currentAllowance - amount);
     }
 
@@ -55,5 +68,20 @@ contract DegenToken is ERC20, Ownable, ERC20Burnable {
 
     function getLockedTokens(address account) public view returns (uint256, uint256) {
         return (lockedTokens[account].amount, lockedTokens[account].unlockTime);
+    }
+
+    // Add a new item to the redeemable items list with a specified ID
+    function addItem(uint256 itemId, string memory name, uint256 cost) public onlyOwner {
+        require(items[itemId].cost == 0, "Item ID already exists");
+        items[itemId] = Item(name, cost);
+    }
+
+    // Redeem an item by paying the required amount of DegenToken
+    function redeem(uint256 itemId) public {
+        require(items[itemId].cost > 0, "Item does not exist");
+        uint256 cost = items[itemId].cost;
+        require(balanceOf(_msgSender()) >= cost, "Insufficient balance to redeem item");
+        _burn(_msgSender(), cost);
+        // Logic to handle item delivery can be added here
     }
 }
